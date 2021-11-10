@@ -1,0 +1,19 @@
+{
+  "posts": [
+    { "id": 1,
+      "title": "News Feed One",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum ullamcorper quam sed malesuada. Integer non massa ac purus euismod consequat. Sed volutpat dolor nec mollis vestibulum. Donec consectetur faucibus enim, ac facilisis risus tincidunt ut. In quam augue, dignissim vitae lacinia in, scelerisque ut metus. Maecenas volutpat auctor placerat. Quisque eget pharetra quam, porttitor finibus lectus. Duis in tincidunt massa. Aliquam tincidunt nulla nec massa bibendum consectetur. Donec placerat nec felis at pulvinar. Cras egestas justo sit amet egestas sodales. Fusce egestas, neque eu semper auctor, libero ex elementum ligula, sit amet aliquam tellus turpis eget velit. Maecenas sed rutrum augue. Cras diam velit, dapibus sit amet odio sed, fermentum faucibus lacus. Nulla justo lectus, scelerisque ac nulla quis, sodales cursus risus.",
+      "author": "Jerry"
+    },
+    { "id": 2,
+      "title": "News Feed Two",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum ullamcorper quam sed malesuada. Integer non massa ac purus euismod consequat. Sed volutpat dolor nec mollis vestibulum. Donec consectetur faucibus enim, ac facilisis risus tincidunt ut. In quam augue, dignissim vitae lacinia in, scelerisque ut metus. Maecenas volutpat auctor placerat. Quisque eget pharetra quam, porttitor finibus lectus. Duis in tincidunt massa. Aliquam tincidunt nulla nec massa bibendum consectetur. Donec placerat nec felis at pulvinar. Cras egestas justo sit amet egestas sodales. Fusce egestas, neque eu semper auctor, libero ex elementum ligula, sit amet aliquam tellus turpis eget velit. Maecenas sed rutrum augue. Cras diam velit, dapibus sit amet odio sed, fermentum faucibus lacus. Nulla justo lectus, scelerisque ac nulla quis, sodales cursus risus.",
+      "author": "Jerry"
+    },
+    { "id": 3,
+      "title": "News Feed Three",
+      "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis bibendum ullamcorper quam sed malesuada. Integer non massa ac purus euismod consequat. Sed volutpat dolor nec mollis vestibulum. Donec consectetur faucibus enim, ac facilisis risus tincidunt ut. In quam augue, dignissim vitae lacinia in, scelerisque ut metus. Maecenas volutpat auctor placerat. Quisque eget pharetra quam, porttitor finibus lectus. Duis in tincidunt massa. Aliquam tincidunt nulla nec massa bibendum consectetur. Donec placerat nec felis at pulvinar. Cras egestas justo sit amet egestas sodales. Fusce egestas, neque eu semper auctor, libero ex elementum ligula, sit amet aliquam tellus turpis eget velit. Maecenas sed rutrum augue. Cras diam velit, dapibus sit amet odio sed, fermentum faucibus lacus. Nulla justo lectus, scelerisque ac nulla quis, sodales cursus risus.",
+      "author": "Jerry"
+    }
+  ]
+}
