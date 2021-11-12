@@ -1,6 +1,7 @@
 enum RouteName{
   FEED = "Feed",
-  HOME = "Home"
+  HOME = "Home",
+  EDIT = "Edit"
 }
 
 export default RouteName

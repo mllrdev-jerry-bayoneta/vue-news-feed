@@ -30,6 +30,5 @@ h1{
   text-align: center;
   margin-top: 10%;
   font-size: 150px;
-
 }
 </style>

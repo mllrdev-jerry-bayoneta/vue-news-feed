@@ -20,6 +20,7 @@ html{
 }
 div#app{
   background-color: #6fffe9;
+  padding-bottom: 1%;
 }
 #app{
   height: 100%;
