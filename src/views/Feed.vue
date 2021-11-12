@@ -110,6 +110,7 @@ export default defineComponent({
     },
     deletePost(id: number, title: string) {
       if (confirm(`delete ${title}?`)) newsFeedServices.deletePostById(id);
+      location.reload();
     },
     toggleModal(index: number) {
       this.newsFeeds[index].read = !this.newsFeeds[index].read;

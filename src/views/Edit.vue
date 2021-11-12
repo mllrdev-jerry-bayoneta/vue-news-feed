@@ -1,6 +1,6 @@
 <template>
   <Header/>
-  <form id="createPost">
+  <form id="createPost" @submit.once="applyEditOnNewsFeed">
     <div class="input-group mb-3 test">
         <span class="input-group-text" id="basic-addon1">Title</span>
         <input type="text" class="form-control" aria-label="title" aria-describedby="basic-addon1"  v-model="postEdit.title">
@@ -22,6 +22,7 @@ import Header from '@/shared/component/Header.vue'
 import router from '@/router'
 import {useRouter} from 'vue-router'
 import RouteName from '@/enum/routes-name.enum'
+import moment from 'moment'
 
 export default defineComponent({
   name: "Edit",
@@ -43,16 +44,21 @@ export default defineComponent({
 
     const id = parseInt(useRoute().params.id as string)
 
+    const date = () => {
+      return moment.utc(new Date).format("MM/DD/YYYY");
+      };
+
     onMounted(() => {
     
       newsFeedServices.getNewsFeedById(id).then((value: INewsFeed) => {
         postEdit.value = value;
       })
     })
-    return {postEdit, router}
+    return {postEdit, router, date}
   },
   methods: {
     applyEditOnNewsFeed(editedPost: INewsFeed, id: number){
+      editedPost.updatedAt = this.date();
       newsFeedServices.editNewsFeedById(editedPost, id);
       router.push({
         name: RouteName.FEED
