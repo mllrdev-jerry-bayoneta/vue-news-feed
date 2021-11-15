@@ -20,9 +20,7 @@
 </template>
 
 <script lang="ts">
-import RouteName from '@/enum/routes-name.enum'
 import IUser from '@/interface/user.interface'
-import router from '@/router'
 import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
@@ -33,17 +31,5 @@ export default defineComponent({
       type: Object as PropType<IUser>
     }
   },
-  methods: {
-    goToNewsFeed(){
-      router.push({
-        name: RouteName.FEED
-      })
-    },
-    goToHome(){
-      router.push({
-        name: RouteName.HOME
-      })
-    }
-  }
 })
 </script>

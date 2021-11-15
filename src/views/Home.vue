@@ -1,26 +1,30 @@
 <template>
   <Header />
+  <h1 @click="goToNewsFeed()">Hello</h1>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Header from '@/shared/component/header.vue'
-import router from '@/router'
 import RouteName from '@/enum/routes-name.enum'
+import { useRouter } from "vue-router"
 
 export default defineComponent({
   name: 'Home',
   components: {
     Header
   },
-  methods:{
-    
-    goToNewsFeed(){
+  setup() {
+    const router = useRouter()
+
+    function goToNewsFeed() {
       router.push({
         name: RouteName.FEED
       })
     }
-  }
+    
+    return { goToNewsFeed }
+  },
 })
 </script>
 
