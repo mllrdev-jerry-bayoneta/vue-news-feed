@@ -1,15 +1,14 @@
 <template>
-  <Header/>
-  <h1 @click="goToNewsFeed()">The News Feed</h1>
+  <Header />
 </template>
 
-<script>
-import Header from '@/shared/component/Header.vue'
+<script lang="ts">
+import { defineComponent } from "vue";
+import Header from '@/shared/component/header.vue'
 import router from '@/router'
 import RouteName from '@/enum/routes-name.enum'
-// @ is an alias to /src
 
-export default {
+export default defineComponent({
   name: 'Home',
   components: {
     Header
@@ -22,7 +21,7 @@ export default {
       })
     }
   }
-}
+})
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 <template>
-  <Header />
+  <Header/>
   <form @submit.once="postMessage" id="createPost">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
@@ -57,15 +57,16 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
-import Header from "@/shared/component/Header.vue";
+import Header from "@/shared/component/header.vue"
 import { newsFeedServices } from "@/services/feed.service";
-import Modal from "@/shared/component/Modal.vue";
-import router from '@/router'
+import Modal from "@/shared/component/modal.vue";
+import { useRouter,useRoute } from 'vue-router'
 import RouteName from '@/enum/routes-name.enum'
 import moment from 'moment'
+import router from "@/router";
 
 export default defineComponent({
-  name: "Feed",
+  name: "feed",
   components: {
     Header,
     Modal,

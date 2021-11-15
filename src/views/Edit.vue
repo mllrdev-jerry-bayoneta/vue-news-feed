@@ -1,5 +1,5 @@
 <template>
-  <Header/>
+  <Header />
   <form id="createPost" @submit.once="applyEditOnNewsFeed">
     <div class="input-group mb-3 test">
         <span class="input-group-text" id="basic-addon1">Title</span>
@@ -18,7 +18,7 @@ import { defineComponent, onMounted, ref } from 'vue'
 import INewsFeed from '@/interface/news-feed.interface'
 import { newsFeedServices } from '@/services/feed.service'
 import { useRoute } from 'vue-router'
-import Header from '@/shared/component/Header.vue'
+import Header from '@/shared/component/header.vue'
 import router from '@/router'
 import {useRouter} from 'vue-router'
 import RouteName from '@/enum/routes-name.enum'
