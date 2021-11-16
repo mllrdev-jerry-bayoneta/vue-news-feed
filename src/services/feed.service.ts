@@ -1,61 +1,57 @@
-import axios from "axios";
-import environment from "@/environments/environment";
 import INewsFeed from "@/interface/news-feed.interface";
 import client from "./client.service";
-const getNewsFeedAll = async () => {
-
+const getAll = async (): Promise<INewsFeed[]> => {
   return client({
     method: 'GET',
     url: 'posts'
-  }).then(response => {
-    const allNewsFeed: INewsFeed[] = response.data;
-    return allNewsFeed;
   })
 }
 
-const getNewsFeedById = async (id: number) => {
+// const getAll = async (): Promise<INewsFeed[]> => {
+//   return await fetch('http://localhost:5000/posts')
+//     .then(response => response.json())
+  
+// }
+
+const getById = async (id: number): Promise<INewsFeed> => {
   return client({
     method: 'GET',
     url: `posts/${id}`
-  }).then(response => {
-    const newsFeed: INewsFeed = response.data;
-    return newsFeed;
   })
 }
 
 const createNewPost = async (newPost: INewsFeed) => {
-  return client({
+  return await client({
     method: 'POST',
     url: 'posts',
     data: newPost
-  }).then(() => {
-    return true
+  }).then(()=>{
+      return true;
+  }).catch(()=>{
+    return false;
   })
+  
 }
 
-const deletePostById = async (id: number) => {
+const deleteById = async (id: number): Promise<null> => {
   return client({
     method: 'DELETE',
     url: `posts/${id}`
-  }).then(() => {
-    return true
   })
 }
 
-const editNewsFeedById = async (editedPost: INewsFeed, id: number) => {
+const editById = async (editedPost: INewsFeed): Promise<null> => {
   return client({
     method: 'PATCH',
-    url: `posts/${id}`,
+    url: `posts/${editedPost.id}`,
     data: editedPost
-  }).then(() => {
-    return true
   })
 }
 
 export const newsFeedServices = {
-  getNewsFeedAll,
-  getNewsFeedById,
+  getAll,
+  getById,
   createNewPost,
-  deletePostById,
-  editNewsFeedById
+  deleteById,
+  editById,
 }

@@ -5,6 +5,7 @@
       <h1 class="display-4">{{news.title}}</h1>
       <p class="lead">{{news.message}}</p>
       <div class="action-buttons">
+        <h4>{{news.createdAt}}</h4>
         <div class="action-button-left">
           <p class="h3">
             <i class="bi bi-trash bi-xl" @click="deletePost(news.id)"></i>
@@ -24,11 +25,8 @@ import { newsFeedServices } from '@/services/feed.service';
 
 export default defineComponent({
   name: "Post",
-  Comment:{
-  },
   props:{
     id: {
-      require: false,
       type: Number
     },
     title: {
@@ -36,15 +34,16 @@ export default defineComponent({
     },
     message: {
       type: String
+    },
+    createdAt: {
+      type: String
     }
   },
-
-  
   setup(props) {
     const news = props;
     const router = useRouter();
     function deletePost(id: number) {
-      if (confirm(`delete?`)) newsFeedServices.deletePostById(id);
+      if (confirm(`delete?`)) newsFeedServices.deleteById(id);
       location.reload();
     }
 
@@ -59,20 +58,12 @@ export default defineComponent({
         }
       })
     }
-
     return { deletePost, toggleModal, editNewsFeed, news }
   },
 })
 </script>
 
 <style scoped>
-#createPost {
-  width: 50%;
-  margin: 5% 25%;
-  padding: 2%;
-  background-color: #3a506b;
-  border-radius: 20px;
-}
 .jumbotron {
   width: 50%;
   margin: 30px 25%;
@@ -80,14 +71,6 @@ export default defineComponent({
   padding: 1%;
   border-radius: 20px;
   color: #faf9f9;
-}
-.input-group {
-  margin: 5% 0%;
-  width: 100%;
-}
-.modal-content {
-  width: 100%;
-  padding: 1%;
 }
 button {
   display: inline-block;
@@ -110,7 +93,10 @@ button {
   color: #1c2541;
 }
 .action-button-left{
-  margin-left: 78%;
+  margin-left: 71%;
+  display: inline-block;
+}
+h4{
   display: inline-block;
 }
 </style>

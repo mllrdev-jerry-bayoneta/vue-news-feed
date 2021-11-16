@@ -1,15 +1,15 @@
 <template>
   <Header />
-  <form id="createPost" @submit="applyEditOnNewsFeed">
+  <form id="updatePost" @submit="applyEditOnNewsFeed">
     <div class="input-group mb-3 test">
         <span class="input-group-text" id="basic-addon1">Title</span>
-        <input type="text" class="form-control" aria-label="title" aria-describedby="basic-addon1"  v-model="postEdit.title">
+        <input type="text" class="form-control" aria-label="title" aria-describedby="basic-addon1" v-model="postEdit.title">
     </div>
     <div class="input-group">
       <span class="input-group-text">Message</span>
       <textarea class="form-control message" aria-label="With textarea" v-model="postEdit.message"></textarea>
     </div>
-    <button class="btn btn-primary" type="submit" @click="applyEditOnNewsFeed(postEdit, postEdit.id)">Edit</button>
+    <button class="btn btn-primary" type="submit" @click="applyEditOnNewsFeed(postEdit)">Edit</button>
   </form>
 </template>
 
@@ -34,7 +34,6 @@ export default defineComponent({
       title: '',
       message: '',  
       author: '',
-      read: false,
       createdAt: Date(),
       updatedAt: Date()
     })
@@ -48,15 +47,14 @@ export default defineComponent({
       };
 
     onMounted(() => {
-    
-    newsFeedServices.getNewsFeedById(id).then((value: INewsFeed) => {
+    newsFeedServices.getById(id).then((value: INewsFeed) => {
         postEdit.value = value;
       })
     })
 
-    function applyEditOnNewsFeed(editedPost: INewsFeed, id: number){
+    function applyEditOnNewsFeed(editedPost: INewsFeed){
       editedPost.updatedAt = date();
-      newsFeedServices.editNewsFeedById(editedPost, id);
+      newsFeedServices.editById(editedPost);
       router.push({
         name: RouteName.FEED
       })
@@ -70,7 +68,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#createPost{
+#updatePost{
   width: 98%;
   margin: 5% 1%;
   padding: 2%;

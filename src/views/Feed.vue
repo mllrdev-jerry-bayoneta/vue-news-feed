@@ -1,6 +1,6 @@
 <template>
   <Header/>
-  <form @submit.once="postMessage" id="createPost">
+  <form @submit.once="(event) => postMessage(event)" id="createPost">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Title</span>
@@ -34,15 +34,11 @@ import { defineComponent, onMounted, onUpdated, ref } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
 import Header from "@/shared/component/header.vue"
 import { newsFeedServices } from "@/services/feed.service";
-// import Modal from "@/shared/component/modal.vue";
-// import { useRouter,useRoute } from 'vue-router'
-// import RouteName from '@/enum/routes-name.enum'
 import moment from 'moment'
 import Post from '@/shared/component/post.vue'
-// import router from "@/router";
 
 export default defineComponent({
-  name: "feed",
+  name: "Feed",
   components: {
     Header,
     Post,
@@ -53,42 +49,47 @@ export default defineComponent({
       title: "",
       message: "",
       author: "",
-      read: false,
       createdAt:  '',
       updatedAt: ''
     });
     const posts = ref<INewsFeed[]>([]);
 
-    const getAllNewsFeed = async () => {
-        newsFeedServices.getNewsFeedAll().then((value: INewsFeed[]) => {
+    const newsFeed = async () => {
+        newsFeedServices.getAll().then((value: INewsFeed[]) => {
         posts.value = value;
       });
     }
 
     onMounted(() => {
-      getAllNewsFeed();
+      newsFeed();
     });
     
     onUpdated(() => {
-      getAllNewsFeed();
+      newsFeed();
     })
 
     const date = () => {
       return moment.utc(new Date).format("MM/DD/YYYY");
       };
 
-    function postMessage() {
-      post.value.read = "false";
+    async function postMessage(el:any) {
+      el.preventDefault();
+      el.stopPropagation();
       post.value.author = "Jerry";
-      post.value.createdAt = date();
-      post.value.updatedAt = date();
-      newsFeedServices.createNewPost(post.value);
-      getAllNewsFeed()
+      const reqBody: INewsFeed= {
+          author: post.value.author,
+          title: post.value.title,
+          message: post.value.message,
+          createdAt: date(),
+          updatedAt: date(),
+      }
+      console.log(reqBody);
+      const test = await newsFeedServices.createNewPost(reqBody);
+      console.log(test)
+      newsFeed()
     }
 
-    
-
-    return { posts, post, getAllNewsFeed, postMessage };
+    return { posts, post, newsFeed, postMessage };
   },
 });
 </script>
