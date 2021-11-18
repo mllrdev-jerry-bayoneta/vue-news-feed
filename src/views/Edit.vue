@@ -1,27 +1,26 @@
 <template>
   <Header />
-  <form id="updatePost" @submit="applyEditOnNewsFeed">
-    <div class="input-group mb-3 test">
+  <form id="updatePost" @submit.prevent="applyEditOnNewsFeed">
+    <div class="input-group mb-3 title">
         <span class="input-group-text" id="basic-addon1">Title</span>
-        <input type="text" class="form-control" aria-label="title" aria-describedby="basic-addon1" v-model="postEdit.title">
+        <input type="text" class="form-control" aria-label="title" aria-describedby="basic-addon1" v-model="post.title">
     </div>
     <div class="input-group">
       <span class="input-group-text">Message</span>
-      <textarea class="form-control message" aria-label="With textarea" v-model="postEdit.message"></textarea>
+      <textarea class="form-control message" aria-label="With textarea" v-model="post.message"></textarea>
     </div>
-    <button class="btn btn-primary" type="submit" @click="applyEditOnNewsFeed(postEdit)">Edit</button>
+    <button class="btn btn-primary" type="submit" @click.prevent="applyEditOnNewsFeed(post)">Edit</button>
   </form>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, onMounted } from 'vue'
 import INewsFeed from '@/interface/news-feed.interface'
-import { newsFeedServices } from '@/services/feed.service'
-import { useRoute } from 'vue-router'
 import Header from '@/shared/component/header.vue'
-import {useRouter} from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import RouteName from '@/enum/routes-name.enum'
-import moment from 'moment'
+import useGetById from '@/composables/feed/useGetById'
+import useEditById from '@/composables/feed/useEditbyId'
 
 export default defineComponent({
   name: "Edit",
@@ -29,40 +28,37 @@ export default defineComponent({
     Header
   },
   setup() {
-      const postEdit = ref<INewsFeed>({
-      id: 0,
-      title: '',
-      message: '',  
-      author: '',
-      createdAt: Date(),
-      updatedAt: Date()
-    })
+    const id = parseInt(useRoute().params.id as string)
+
+    const { post, getPostById } = useGetById(id);
+
+    const { editById } = useEditById()
+    
+    const date = new Date();
 
     const router = useRouter()
 
-    const id = parseInt(useRoute().params.id as string)
-
-    const date = () => {
-      return moment.utc(new Date).format("MM/DD/YYYY");
-      };
-
     onMounted(() => {
-    newsFeedServices.getById(id).then((value: INewsFeed) => {
-        postEdit.value = value;
-      })
-    })
+      getPostById()
+    });
+    
+    async function applyEditOnNewsFeed(editedPost: INewsFeed){
+      editedPost.updatedAt = date.toLocaleDateString()
+      const res = await editById(editedPost)
+        if(res){
+          console.log('jer')
+          alert('have been updated')
+                router.push({
+                name: RouteName.FEED
+                })
+        }else{
+          alert("update failed edit")
+              console.log('j')
+        }
 
-    function applyEditOnNewsFeed(editedPost: INewsFeed){
-      editedPost.updatedAt = date();
-      newsFeedServices.editById(editedPost);
-      router.push({
-        name: RouteName.FEED
-      })
+
     }
-    return { postEdit, router, applyEditOnNewsFeed }
-  },
-  methods: {
-
+    return { post, router, applyEditOnNewsFeed }
   }
 });
 </script>
@@ -75,7 +71,7 @@ export default defineComponent({
   background-color: #3A506B;
   border-radius: 20px;
 }
-.test{
+.title{
   min-height: 50px;
 }
 .message{

@@ -3,9 +3,14 @@
     class="jumbotron jumbotron-fluid">
     <div class="container">
       <h1 class="display-4">{{news.title}}</h1>
-      <p class="lead">{{news.message}}</p>
+      <Modal v-if="read">
+        <div class="modal-content">
+          <p class="lead">{{ news.message }}</p>
+        </div>
+      </Modal>
       <div class="action-buttons">
-        <h4>{{news.createdAt}}</h4>
+        <h4>{{news.updatedAt}}</h4>
+        <button class="btn btn-primary" @click="readMore()">read</button>
         <div class="action-button-left">
           <p class="h3">
             <i class="bi bi-trash bi-xl" @click="deletePost(news.id)"></i>
@@ -18,13 +23,17 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import RouteName from '@/enum/routes-name.enum'
-import { useRouter } from 'vue-router';
-import { newsFeedServices } from '@/services/feed.service';
+import { useRouter } from 'vue-router'
+import useDeleteById from '@/composables/feed/useDeleteById'
+import Modal from '@/shared/component/modal.vue'
 
 export default defineComponent({
   name: "Post",
+  components: {
+    Modal,
+  },
   props:{
     id: {
       type: Number
@@ -37,18 +46,22 @@ export default defineComponent({
     },
     createdAt: {
       type: String
+    },
+    updatedAt: {
+      type: String
     }
   },
   setup(props) {
+    const { deletePostById } = useDeleteById();
     const news = props;
     const router = useRouter();
+    const read = ref(false)
     function deletePost(id: number) {
-      if (confirm(`delete?`)) newsFeedServices.deleteById(id);
-      location.reload();
-    }
-
-    function toggleModal(index: number) {
-      // props.post[index].read = !newsFeeds.value[index].read;
+      if (confirm(`delete?`)) {
+        deletePostById(id);
+      }
+        location.reload();
+      
     }
     function editNewsFeed(id: number) {
       router.push({
@@ -58,7 +71,11 @@ export default defineComponent({
         }
       })
     }
-    return { deletePost, toggleModal, editNewsFeed, news }
+
+    function readMore() {
+      read.value = !read.value;
+    }
+    return { deletePost, readMore, editNewsFeed, news, read }
   },
 })
 </script>
@@ -66,10 +83,9 @@ export default defineComponent({
 <style scoped>
 .jumbotron {
   width: 50%;
-  margin: 30px 25%;
+  margin: 20px 25%;
   background-color: #1c2541;
-  padding: 1%;
-  border-radius: 20px;
+  border-radius: 10px;
   color: #faf9f9;
 }
 button {
@@ -80,6 +96,10 @@ button {
 }
 .action-buttons {
   margin-top: 10px;
+  margin-bottom: 15px;
+  background-color: #3a506b;
+  padding: 8px;
+  border-radius: 10px;
 }
 .bi {
   opacity: 0.5;
@@ -90,14 +110,18 @@ button {
   color: red;
 }
 .modal-content {
-  color: #1c2541;
+  color: #1c254180;
 }
 .action-button-left{
-  margin-left: 71%;
+  margin-left: 63%;
   display: inline-block;
 }
 h4{
   display: inline-block;
+  margin-right: 10px;
+}
+.lead{
+  padding: 5px;
 }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <Header/>
-  <form @submit.once="(event) => postMessage(event)" id="createPost">
+  <form @submit="postMessage()" id="createPost">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Title</span>
@@ -29,13 +29,14 @@
     <Post v-bind="post" />
   </div> 
 </template>
+
 <script lang="ts">
-import { defineComponent, onMounted, onUpdated, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
 import Header from "@/shared/component/header.vue"
-import { newsFeedServices } from "@/services/feed.service";
-import moment from 'moment'
 import Post from '@/shared/component/post.vue'
+import useGetAll from '@/composables/feed/useGetAll'
+import useCreate from '@/composables/feed/useCreate'
 
 export default defineComponent({
   name: "Feed",
@@ -44,52 +45,28 @@ export default defineComponent({
     Post,
   },
   setup() {
-    const post = ref<INewsFeed>({
-      id: 0,
-      title: "",
-      message: "",
-      author: "",
-      createdAt:  '',
-      updatedAt: ''
-    });
-    const posts = ref<INewsFeed[]>([]);
+    const { posts, getAllFeed } = useGetAll()
 
-    const newsFeed = async () => {
-        newsFeedServices.getAll().then((value: INewsFeed[]) => {
-        posts.value = value;
-      });
-    }
+    const { post, create } = useCreate();
 
-    onMounted(() => {
-      newsFeed();
-    });
-    
-    onUpdated(() => {
-      newsFeed();
-    })
+    const date = new Date();
 
-    const date = () => {
-      return moment.utc(new Date).format("MM/DD/YYYY");
-      };
-
-    async function postMessage(el:any) {
-      el.preventDefault();
-      el.stopPropagation();
+    async function postMessage() {
       post.value.author = "Jerry";
-      const reqBody: INewsFeed= {
+      const reqBody: INewsFeed = {
           author: post.value.author,
           title: post.value.title,
           message: post.value.message,
-          createdAt: date(),
-          updatedAt: date(),
+          createdAt: date.toLocaleDateString(),
+          updatedAt: date.toLocaleDateString(),
       }
-      console.log(reqBody);
-      const test = await newsFeedServices.createNewPost(reqBody);
-      console.log(test)
-      newsFeed()
+      await create(reqBody)
     }
 
-    return { posts, post, newsFeed, postMessage };
+    onMounted(() => {
+      getAllFeed()
+    });
+    return { posts, post, postMessage };
   },
 });
 </script>
