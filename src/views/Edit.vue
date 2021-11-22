@@ -53,8 +53,6 @@ export default defineComponent({
         }else{
           alert("update failed edit")
         }
-
-
     }
     return { post, router, applyEditOnNewsFeed }
   }

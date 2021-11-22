@@ -20,8 +20,6 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteName.EDIT,
     component: Edit
   }
-
-
 ]
 
 const router = createRouter({

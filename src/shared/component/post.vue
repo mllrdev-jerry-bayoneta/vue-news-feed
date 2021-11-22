@@ -68,7 +68,6 @@ export default defineComponent({
         }
       })
     }
-
     function readMore() {
       read.value = !read.value;
     }

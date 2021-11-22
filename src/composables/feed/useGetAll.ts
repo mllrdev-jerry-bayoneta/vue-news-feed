@@ -16,7 +16,6 @@ import { ref } from 'vue'
     .catch(() => {
       return false
     })
-
   }
 
   return { posts, getAllFeed }
