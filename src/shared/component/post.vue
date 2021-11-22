@@ -59,7 +59,6 @@ export default defineComponent({
         deletePostById(id);
       }
         location.reload();
-      
     }
     function editNewsFeed(id: number) {
       router.push({

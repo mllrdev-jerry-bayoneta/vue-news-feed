@@ -12,8 +12,6 @@ function useDeleteById(){
     .catch(() => {
       return false
     })
-
-
   }
 
   return { deletePostById }
