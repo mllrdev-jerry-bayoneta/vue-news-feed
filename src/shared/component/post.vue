@@ -2,20 +2,20 @@
     <div
     class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4">{{news.title}}</h1>
+      <h1 class="display-4">{{props.post.title}}</h1>
       <Modal v-if="read">
         <div class="modal-content">
-          <p class="lead">{{ news.message }}</p>
+          <p class="lead">{{ props.post.message }}</p>
         </div>
       </Modal>
       <div class="action-buttons">
-        <h4>{{news.updatedAt}}</h4>
+        <h4>{{props.post.updatedAt}}</h4>
         <button class="btn btn-primary" @click="readMore()">read</button>
         <div class="action-button-left">
           <p class="h3">
-            <i class="bi bi-trash bi-xl" @click="deletePost(news.id)"></i>
+            <i class="bi bi-trash bi-xl" @click="deletePost(props.post.id)"></i>
           </p>
-          <p class="h3"><i class="bi bi-pencil-square" @click="editNewsFeed(news.id)"></i></p>
+          <p class="h3"><i class="bi bi-pencil-square" @click="editNewsFeed(props.post.id)"></i></p>
         </div>
       </div>
     </div>
@@ -23,11 +23,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, PropType, ref, } from 'vue'
 import RouteName from '@/enum/routes-name.enum'
 import { useRouter } from 'vue-router'
 import useDeleteById from '@/composables/feed/useDeleteById'
 import Modal from '@/shared/component/modal.vue'
+import INewsFeed from '@/interface/news-feed.interface'
 
 export default defineComponent({
   name: "Post",
@@ -35,25 +36,22 @@ export default defineComponent({
     Modal,
   },
   props:{
-    id: {
-      type: Number
-    },
-    title: {
-      type: String
-    },
-    message: {
-      type: String
-    },
-    createdAt: {
-      type: String
-    },
-    updatedAt: {
-      type: String
+    post: {
+      require: false,
+      type: Object as PropType<INewsFeed>,
+      default:  {
+          id: 0,
+          title: '',
+          message: '',
+          author: '',
+          createdAt: '',
+          updatedAt: '',
+      } as INewsFeed
+
     }
   },
   setup(props) {
     const { deletePostById } = useDeleteById();
-    const news = props;
     const router = useRouter();
     const read = ref(false)
     function deletePost(id: number) {
@@ -75,7 +73,7 @@ export default defineComponent({
     function readMore() {
       read.value = !read.value;
     }
-    return { deletePost, readMore, editNewsFeed, news, read }
+    return { deletePost, readMore, editNewsFeed, props, read }
   },
 })
 </script>

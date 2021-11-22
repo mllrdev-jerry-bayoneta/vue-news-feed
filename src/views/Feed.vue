@@ -26,7 +26,7 @@
     <button class="btn btn-primary" type="submit">POST</button>
   </form>
   <div v-for="post in posts" :key="post.id"> 
-    <Post v-bind="post" />
+    <Post :post="post" />
   </div> 
 </template>
 
