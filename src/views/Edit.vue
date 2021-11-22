@@ -46,14 +46,12 @@ export default defineComponent({
       editedPost.updatedAt = date.toLocaleDateString()
       const res = await editById(editedPost)
         if(res){
-          console.log('jer')
           alert('have been updated')
                 router.push({
                 name: RouteName.FEED
                 })
         }else{
           alert("update failed edit")
-              console.log('j')
         }
 
 
