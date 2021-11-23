@@ -1,6 +1,6 @@
 <template>
-  <Header />
-  <form @submit.once="postMessage" id="createPost">
+  <Header/>
+  <form @submit="postMessage()" id="createPost">
     <div class="input-group mb-3">
       <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">Title</span>
@@ -25,104 +25,48 @@
     </div>
     <button class="btn btn-primary" type="submit">POST</button>
   </form>
-
-  <div
-    class="jumbotron jumbotron-fluid"
-    v-for="(news, index) in newsFeeds"
-    :key="index"
-  >
-    <div class="container">
-      <h1 class="display-4">{{ news.title }}</h1>
-      <p v-if="news.read" class="lead">{{ news.message.slice(0, 100) }}</p>
-      <Modal v-if="!news.read">
-        <div class="modal-content">
-          <p class="lead">{{ news.message }}</p>
-        </div>
-      </Modal>
-      <div class="action-buttons">
-        <button @click="toggleModal(index)" class="btn btn-primary">
-          Read
-        </button>
-        <div class="action-button-left">
-          <p class="h3">
-            <i class="bi bi-trash bi-xl" @click="deletePost(news.id, news.title)"></i>
-          </p>
-          <p class="h3"><i class="bi bi-pencil-square" @click="editNewsFeed(news.id)"></i></p>
-        </div>
-
-      </div>
-    </div>
-  </div>
+  <div v-for="post in posts" :key="post.id"> 
+    <Post :post="post" />
+  </div> 
 </template>
+
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
-import Header from "@/shared/component/Header.vue";
-import { newsFeedServices } from "@/services/feed.service";
-import Modal from "@/shared/component/Modal.vue";
-import router from '@/router'
-import RouteName from '@/enum/routes-name.enum'
-import moment from 'moment'
+import Header from "@/shared/component/header.vue"
+import Post from '@/shared/component/post.vue'
+import useGetAll from '@/composables/feed/useGetAll'
+import useCreate from '@/composables/feed/useCreate'
 
 export default defineComponent({
   name: "Feed",
   components: {
     Header,
-    Modal,
+    Post,
   },
   setup() {
-    const post = ref<INewsFeed>({
-      id: 0,
-      title: "",
-      message: "",
-      author: "",
-      read: false,
-      createdAt:  '',
-      updatedAt: ''
-    });
-    const newsFeeds = ref<INewsFeed[]>([]);
+    const { posts, getAllFeed } = useGetAll()
 
-    const getAllNewsFeed = async () => {
-        newsFeedServices.getNewsFeedAll().then((value: INewsFeed[]) => {
-        newsFeeds.value = value;
-      });
+    const { post, create } = useCreate();
+
+    const date = new Date();
+
+    async function postMessage() {
+      post.value.author = "Jerry";
+      const reqBody: INewsFeed = {
+          author: post.value.author,
+          title: post.value.title,
+          message: post.value.message,
+          createdAt: date.toLocaleDateString(),
+          updatedAt: date.toLocaleDateString(),
+      }
+      await create(reqBody)
     }
 
     onMounted(() => {
-      getAllNewsFeed();
+      getAllFeed()
     });
-
-    const date = () => {
-      return moment.utc(new Date).format("MM/DD/YYYY");
-      };
-
-    return { newsFeeds, post, date, getAllNewsFeed };
-  },
-  methods: {
-    postMessage() {
-      this.post.read = "false";
-      this.post.author = "Jerry";
-      this.post.createdAt = this.date();
-      this.post.updatedAt = this.date();
-      console.log(this.post);
-      newsFeedServices.createNewPost(this.post);
-      this.getAllNewsFeed()
-    },
-    deletePost(id: number, title: string) {
-      if (confirm(`delete ${title}?`)) newsFeedServices.deletePostById(id);
-      location.reload();
-    },
-    toggleModal(index: number) {
-      this.newsFeeds[index].read = !this.newsFeeds[index].read;
-    },
-    editNewsFeed(id: number) {
-      router.push({
-        name: RouteName.EDIT,
-        params: {
-          id: id
-        }
-      })
-    }
+    return { posts, post, postMessage };
   },
 });
 </script>
@@ -174,5 +118,9 @@ button {
 .action-button-left{
   margin-left: 78%;
   display: inline-block;
+}
+.test{
+  width: 50%;
+  height: 50%;
 }
 </style>

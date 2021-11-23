@@ -1,16 +1,20 @@
 import environment from "@/environments/environment";
 import IClientRequest from "@/interface/client-request.interface";
-import axios from "axios";
+import IError from "@/interface/error.interface";
 
 const client = async(request: IClientRequest) => {
-  return axios({
+  return await fetch(`${environment.baseUrl}/${request.url}`,{
     method: request.method,
-    url: `${environment.baseUrl}/${request.url}`,
-    data: request.data
-  }).then(response => {
+    headers : {
+      'Content-type' : 'application/json'
+    },
+    body: JSON.stringify(request.data),
+  })
+  .then(response => {
     return response
   }).catch(error => {
-    return error
+    const errors: IError = { errorCode: error.status, ok:error.ok }
+    throw errors;
   })
 }
 

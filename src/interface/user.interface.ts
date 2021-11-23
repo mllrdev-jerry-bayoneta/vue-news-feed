@@ -3,7 +3,6 @@ interface IUser {
   firstName: string;
   lastName: string;
   age: number;
-
 }
 
 export default IUser;
