@@ -1,19 +1,25 @@
+import HttpMethod from '@/enum/http-method.enum'
 import client from '@/services/client.service'
+import { Ref, ref } from 'vue'
 
-function useDeleteById(){
-  const deletePostById = async (id: number) => {
-    await client({
-      method: 'DELETE',
+function useDeleteById(id: number): { res: Ref<boolean> } {
+  const res = ref<boolean>(false)
+  const deletePostById = async (): Promise<boolean | Ref<boolean>> => {
+    return await client({
+      method: HttpMethod.DELETE,
       url: `posts/${id}`
     }).then(() => {
-      return true
+      res.value = true
+      return res
     })
-    .catch(() => {
-      return false
-    })
+      .catch(() => {
+        return false
+      })
   }
 
-  return { deletePostById }
+  deletePostById()
+
+  return { res }
 }
 
 export default useDeleteById

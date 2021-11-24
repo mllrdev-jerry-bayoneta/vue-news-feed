@@ -1,5 +1,5 @@
 interface INewsFeed {
-  id?: number;
+  id: number;
   title: string;
   message: string;
   author: string;

@@ -1,8 +1,8 @@
 import RouteName from '@/enum/routes-name.enum'
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '@/views/home.vue'
-import Feed from '@/views/feed.vue'
-import Edit from '@/views/edit.vue'
+import Home from '@/views/home-page.vue'
+import Feed from '@/views/feed-page.vue'
+import Edit from '@/views/edit-page.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
