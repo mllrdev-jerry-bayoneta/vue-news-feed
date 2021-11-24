@@ -31,7 +31,7 @@ import { defineComponent, PropType, ref } from "vue";
 import RouteName from "@/enum/routes-name.enum";
 import { useRouter } from "vue-router";
 import useDeleteById from "@/composables/feed/useDeleteById";
-import Modal from "@/shared/component/modal.vue";
+import Modal from "@/shared/component/modal.vue"
 import INewsFeed from "@/interface/news-feed.interface";
 
 export default defineComponent({

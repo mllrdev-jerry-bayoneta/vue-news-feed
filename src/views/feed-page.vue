@@ -54,6 +54,7 @@ export default defineComponent({
     async function postMessage() {
       post.value.author = "Jerry";
       const reqBody: INewsFeed = {
+          id: post.value.id,
           author: post.value.author,
           title: post.value.title,
           message: post.value.message,
