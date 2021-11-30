@@ -5,7 +5,6 @@ import { Ref, ref } from 'vue'
 
 function useGetAll(): {
   posts: Ref<INewsFeed[]>;
-  getAllFeed: () => Promise<boolean>;
 } {
   const posts = ref<INewsFeed[]>([]);
 
@@ -24,7 +23,7 @@ function useGetAll(): {
 
   getAllFeed();
 
-  return { posts, getAllFeed }
+  return { posts }
 }
 
 export default useGetAll
