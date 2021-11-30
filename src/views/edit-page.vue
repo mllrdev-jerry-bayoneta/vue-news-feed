@@ -35,8 +35,8 @@ import INewsFeed from "@/interface/news-feed.interface";
 import Header from "@/shared/component/header.vue";
 import { useRouter, useRoute } from "vue-router";
 import RouteName from "@/enum/routes-name.enum";
-import useGetById from "@/composables/feed/useGetById";
-import useEditById from "@/composables/feed/useEditbyId";
+import useGetById from "@/composables/feed/use-get-by-id";
+import useEditById from "@/composables/feed/use-edit-by-id";
 
 export default defineComponent({
   name: "Edit",
@@ -64,7 +64,7 @@ export default defineComponent({
         alert("update failed edit");
       }
     }
-    return { post, router, applyEditOnNewsFeed };
+    return { post, applyEditOnNewsFeed };
   },
 });
 </script>

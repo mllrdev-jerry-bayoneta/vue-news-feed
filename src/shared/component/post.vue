@@ -30,7 +30,7 @@
 import { defineComponent, PropType, ref } from "vue";
 import RouteName from "@/enum/routes-name.enum";
 import { useRouter } from "vue-router";
-import useDeletePost from "@/composables/feed/useDeletePost";
+import useDeletePost from "@/composables/feed/use-delete-post";
 import Modal from "@/shared/component/modal.vue"
 import INewsFeed from "@/interface/news-feed.interface";
 

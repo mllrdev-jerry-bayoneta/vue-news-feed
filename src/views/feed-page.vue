@@ -35,8 +35,8 @@ import { defineComponent } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
 import Header from "@/shared/component/header.vue"
 import Post from '@/shared/component/post.vue'
-import useGetAll from '@/composables/feed/useGetAll'
-import useCreate from '@/composables/feed/useCreate'
+import useGetAll from '@/composables/feed/use-get-all'
+import useCreate from '@/composables/feed/use-create'
 
 export default defineComponent({
   name: "Feed",
