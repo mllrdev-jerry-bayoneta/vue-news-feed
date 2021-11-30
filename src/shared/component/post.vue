@@ -30,7 +30,7 @@
 import { defineComponent, PropType, ref } from "vue";
 import RouteName from "@/enum/routes-name.enum";
 import { useRouter } from "vue-router";
-import useDeleteById from "@/composables/feed/useDeleteById";
+import useDeletePost from "@/composables/feed/useDeletePost";
 import Modal from "@/shared/component/modal.vue"
 import INewsFeed from "@/interface/news-feed.interface";
 
@@ -58,7 +58,7 @@ export default defineComponent({
     const read = ref(false);
     function deletePost(id: number) {
       if (confirm(`delete?`)) {
-        const { res } = useDeleteById(id);
+        const { res } = useDeletePost(id);
         if (res) {
           alert("have been updated");
           router.push({
