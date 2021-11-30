@@ -1,21 +1,25 @@
 <template>
-    <div
-    class="jumbotron jumbotron-fluid">
+  <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4">{{props.post.title}}</h1>
+      <h1 class="display-4">{{ props.post.title }}</h1>
       <Modal v-if="read">
         <div class="modal-content">
           <p class="lead">{{ props.post.message }}</p>
         </div>
       </Modal>
       <div class="action-buttons">
-        <h4>{{props.post.updatedAt}}</h4>
+        <h4>{{ props.post.updatedAt }}</h4>
         <button class="btn btn-primary" @click="readMore()">read</button>
         <div class="action-button-left">
           <p class="h3">
             <i class="bi bi-trash bi-xl" @click="deletePost(props.post.id)"></i>
           </p>
-          <p class="h3"><i class="bi bi-pencil-square" @click="editNewsFeed(props.post.id)"></i></p>
+          <p class="h3">
+            <i
+              class="bi bi-pencil-square"
+              @click="editNewsFeed(props.post.id)"
+            ></i>
+          </p>
         </div>
       </div>
     </div>
@@ -23,57 +27,63 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, } from 'vue'
-import RouteName from '@/enum/routes-name.enum'
-import { useRouter } from 'vue-router'
-import useDeleteById from '@/composables/feed/useDeleteById'
-import Modal from '@/shared/component/modal.vue'
-import INewsFeed from '@/interface/news-feed.interface'
+import { defineComponent, PropType, ref } from "vue";
+import RouteName from "@/enum/routes-name.enum";
+import { useRouter } from "vue-router";
+import useDeletePost from "@/composables/feed/use-delete-post";
+import Modal from "@/shared/component/modal.vue"
+import INewsFeed from "@/interface/news-feed.interface";
 
 export default defineComponent({
   name: "Post",
   components: {
     Modal,
   },
-  props:{
+  props: {
     post: {
       require: false,
       type: Object as PropType<INewsFeed>,
-      default:  {
-          id: 0,
-          title: '',
-          message: '',
-          author: '',
-          createdAt: '',
-          updatedAt: '',
-      } as INewsFeed
-
-    }
+      default: {
+        id: 0,
+        title: "",
+        message: "",
+        author: "",
+        createdAt: "",
+        updatedAt: "",
+      } as INewsFeed,
+    },
   },
   setup(props) {
-    const { deletePostById } = useDeleteById();
     const router = useRouter();
-    const read = ref(false)
+    const read = ref(false);
     function deletePost(id: number) {
       if (confirm(`delete?`)) {
-        deletePostById(id);
+        const { res } = useDeletePost(id);
+        if (res) {
+          alert("have been updated");
+          router.push({
+            name: RouteName.FEED,
+          });
+        } else {
+          alert("update failed edit");
+        }
       }
-        location.reload();
+      location.reload();
     }
     function editNewsFeed(id: number) {
       router.push({
         name: RouteName.EDIT,
         params: {
-          id: id
-        }
-      })
+          id: id,
+        },
+      });
     }
     function readMore() {
       read.value = !read.value;
     }
-    return { deletePost, readMore, editNewsFeed, props, read }
+    return { deletePost, readMore, editNewsFeed, props, read };
   },
-})
+});
 </script>
 
 <style scoped>
@@ -108,15 +118,15 @@ button {
 .modal-content {
   color: #1c254180;
 }
-.action-button-left{
+.action-button-left {
   margin-left: 63%;
   display: inline-block;
 }
-h4{
+h4 {
   display: inline-block;
   margin-right: 10px;
 }
-.lead{
+.lead {
   padding: 5px;
 }
 </style>

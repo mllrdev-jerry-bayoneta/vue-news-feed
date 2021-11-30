@@ -31,12 +31,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import INewsFeed from "@/interface/news-feed.interface";
 import Header from "@/shared/component/header.vue"
 import Post from '@/shared/component/post.vue'
-import useGetAll from '@/composables/feed/useGetAll'
-import useCreate from '@/composables/feed/useCreate'
+import useGetAll from '@/composables/feed/use-get-all'
+import useCreate from '@/composables/feed/use-create'
 
 export default defineComponent({
   name: "Feed",
@@ -45,7 +45,7 @@ export default defineComponent({
     Post,
   },
   setup() {
-    const { posts, getAllFeed } = useGetAll()
+    const { posts } = useGetAll()
 
     const { post, create } = useCreate();
 
@@ -54,6 +54,7 @@ export default defineComponent({
     async function postMessage() {
       post.value.author = "Jerry";
       const reqBody: INewsFeed = {
+          id: post.value.id,
           author: post.value.author,
           title: post.value.title,
           message: post.value.message,
@@ -62,10 +63,6 @@ export default defineComponent({
       }
       await create(reqBody)
     }
-
-    onMounted(() => {
-      getAllFeed()
-    });
     return { posts, post, postMessage };
   },
 });
